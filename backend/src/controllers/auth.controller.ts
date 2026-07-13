@@ -7,6 +7,7 @@ import { MESSAGES } from '../common/constants/statusMessages';
 import { IAuthService } from '../services/interface/IAuthService';
 import { Request, Response } from 'express';
 import logger from '../utils/logger';
+import { AuthRequest } from '../middlewares/auth.middleware';
 
 @injectable()
 export class AuthController {
@@ -78,4 +79,14 @@ export class AuthController {
     logger.info('User logged out');
     return res.status(HttpStatus.OK).json(ApiResponse.success(null, MESSAGES.AUTH.LOGOUT_SUCCESS));
   }
+
+
+  async getCurrentUser(req: AuthRequest, res: Response): Promise<Response> {
+  const userId = req.userId as string;
+  const user = await this._authService.getCurrentUser(userId);
+
+  return res
+    .status(HttpStatus.OK)
+    .json(ApiResponse.success({ user }, MESSAGES.AUTH.USER_FETCHED));
+}
 }

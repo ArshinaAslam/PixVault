@@ -16,4 +16,8 @@ export class UserRepository extends BaseRepository<IUser> implements IUserReposi
   async findByEmail(email: string): Promise<IUser | null> {
     return this.findOne({ email });
   }
+
+    async findByUserId(taskId: string): Promise<IUser | null> {
+      return this.findById(taskId);
+    }
 }

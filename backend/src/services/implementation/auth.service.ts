@@ -7,7 +7,7 @@ import { MESSAGES } from '../../common/constants/statusMessages';
 import { HttpStatus } from '../../common/enums/httpStatus.enum';
 import { AppError } from '../../common/errors/appError';
 import { ENV } from '../../config/env';
-import { SignupDto, LoginDto, AuthResultDto } from '../../dto/auth.dto';
+import { SignupDto, LoginDto, AuthResultDto, AuthUserDto } from '../../dto/auth.dto';
 import { IUserRepository } from '../../repositories/interface/IUserRepository';
 import { AuthMapper } from '../../mappers/auth.mapper';
 import logger from '../../utils/logger';
@@ -93,5 +93,13 @@ export class AuthService implements IAuthService {
     logger.info('Access token refreshed', { userId: decoded.userId });
 
     return { accessToken: newAccessToken };
+  }
+
+    async getCurrentUser(userId: string): Promise<AuthUserDto> {
+    const user = await this._userRepo.findByUserId(userId);
+    if (!user) {
+      throw new AppError(MESSAGES.AUTH.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+    return AuthMapper.toUserDto(user);
   }
 }

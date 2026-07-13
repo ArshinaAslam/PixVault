@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\Arshina\\Desktop\\StockImagePlatform\\backend\\logs\\.71cc92d621aaf86075d947745036e856eaa117fe-audit.json",
+    "files": [
+        {
+            "date": 1783946618948,
+            "name": "C:\\Users\\Arshina\\Desktop\\StockImagePlatform\\backend\\logs\\error-2026-07-13.log",
+            "hash": "1d2922e0e6caa0a7e60b4ca1725d8d2c5890dee2affc4a10d0e616ec6676827c"
+        }
+    ],
+    "hashType": "sha256"
+}

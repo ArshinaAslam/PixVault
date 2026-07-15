@@ -23,8 +23,8 @@ export class AuthController {
 
     res.cookie('refreshToken', result.tokens.refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+       secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -45,8 +45,8 @@ export class AuthController {
 
     res.cookie('refreshToken', result.tokens.refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+       secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -73,8 +73,8 @@ export class AuthController {
   async logout(req: Request, res: Response): Promise<Response> {
     res.clearCookie('refreshToken', {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+       secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     });
     logger.info('User logged out');
     return res.status(HttpStatus.OK).json(ApiResponse.success(null, MESSAGES.AUTH.LOGOUT_SUCCESS));

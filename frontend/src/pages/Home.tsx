@@ -9,7 +9,6 @@ import {
 } from "@dnd-kit/core";
 import {
   SortableContext,
-  arrayMove,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useAppSelector } from "../hooks/useAppSelector";

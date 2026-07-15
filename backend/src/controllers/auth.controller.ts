@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import { DI_TYPES } from '../common/di/types';
-import { LoginDto, SignupDto } from '../dto/auth.dto';
+import { ChangePasswordDto, LoginDto, SignupDto } from '../dto/auth.dto';
 import { HttpStatus } from '../common/enums/httpStatus.enum';
 import { ApiResponse } from '../common/response/ApiResponse';
 import { MESSAGES } from '../common/constants/statusMessages';
@@ -80,13 +80,23 @@ export class AuthController {
     return res.status(HttpStatus.OK).json(ApiResponse.success(null, MESSAGES.AUTH.LOGOUT_SUCCESS));
   }
 
-
   async getCurrentUser(req: AuthRequest, res: Response): Promise<Response> {
+    const userId = req.userId as string;
+    const user = await this._authService.getCurrentUser(userId);
+
+    return res
+      .status(HttpStatus.OK)
+      .json(ApiResponse.success({ user }, MESSAGES.AUTH.USER_FETCHED));
+  }
+
+  async changePassword(req: AuthRequest, res: Response): Promise<Response> {
   const userId = req.userId as string;
-  const user = await this._authService.getCurrentUser(userId);
+  const dto = req.body as ChangePasswordDto;
+
+  await this._authService.changePassword(userId, dto);
 
   return res
     .status(HttpStatus.OK)
-    .json(ApiResponse.success({ user }, MESSAGES.AUTH.USER_FETCHED));
+    .json(ApiResponse.success(null, MESSAGES.AUTH.PASSWORD_CHANGED));
 }
 }

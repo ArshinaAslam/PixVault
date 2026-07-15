@@ -24,3 +24,8 @@ export interface AuthResultDto {
   user: AuthUserDto;
   tokens: AuthTokensDto;
 }
+
+export interface ChangePasswordDto {
+  currentPassword: string;
+  newPassword: string;
+}

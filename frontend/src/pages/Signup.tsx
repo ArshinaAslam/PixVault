@@ -1,14 +1,14 @@
-import { useState, type FormEvent } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useAppSelector } from "../hooks/useAppSelector";
-import { useAppDispatch } from "../hooks/useAppDispatch";
-import { signupAsync } from "../features/auth/authThunks";
-import { validateSignup, type ValidationErrors } from "../utils/validation";
+import { useState, type FormEvent } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { signupAsync } from '../features/auth/authThunks';
+import { validateSignup, type ValidationErrors } from '../utils/validation';
 
 const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [fieldErrors, setFieldErrors] = useState<ValidationErrors>({});
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Signup = () => {
 
     const result = await dispatch(signupAsync({ email, phone, password }));
     if (signupAsync.fulfilled.match(result)) {
-      navigate("/dashboard");
+      navigate('/home');
     }
   };
 
@@ -39,7 +39,7 @@ const Signup = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={fieldErrors.email ? "input-error" : ""}
+            className={fieldErrors.email ? 'input-error' : ''}
           />
           {fieldErrors.email && <span className="field-error">{fieldErrors.email}</span>}
         </div>
@@ -49,7 +49,7 @@ const Signup = () => {
             placeholder="Phone number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className={fieldErrors.phone ? "input-error" : ""}
+            className={fieldErrors.phone ? 'input-error' : ''}
           />
           {fieldErrors.phone && <span className="field-error">{fieldErrors.phone}</span>}
         </div>
@@ -60,13 +60,13 @@ const Signup = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={fieldErrors.password ? "input-error" : ""}
+            className={fieldErrors.password ? 'input-error' : ''}
           />
           {fieldErrors.password && <span className="field-error">{fieldErrors.password}</span>}
         </div>
 
         <button type="submit" className="primary-btn" disabled={loading}>
-          {loading ? "Creating account…" : "Sign up"}
+          {loading ? 'Creating account…' : 'Sign up'}
         </button>
         <p className="auth-switch">
           Already have an account? <Link to="/login">Log in</Link>

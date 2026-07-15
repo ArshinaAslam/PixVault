@@ -1,13 +1,13 @@
-import { useState, type FormEvent } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useAppSelector } from "../hooks/useAppSelector";
-import { useAppDispatch } from "../hooks/useAppDispatch";
-import { loginAsync } from "../features/auth/authThunks";
-import { validateLogin, type ValidationErrors } from "../utils/validation";
+import { useState, type FormEvent } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { loginAsync } from '../features/auth/authThunks';
+import { validateLogin, type ValidationErrors } from '../utils/validation';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [fieldErrors, setFieldErrors] = useState<ValidationErrors>({});
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Login = () => {
 
     const result = await dispatch(loginAsync({ email, password }));
     if (loginAsync.fulfilled.match(result)) {
-      navigate("/dashboard");
+      navigate('/home');
     }
   };
 
@@ -38,7 +38,7 @@ const Login = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={fieldErrors.email ? "input-error" : ""}
+            className={fieldErrors.email ? 'input-error' : ''}
           />
           {fieldErrors.email && <span className="field-error">{fieldErrors.email}</span>}
         </div>
@@ -49,13 +49,13 @@ const Login = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={fieldErrors.password ? "input-error" : ""}
+            className={fieldErrors.password ? 'input-error' : ''}
           />
           {fieldErrors.password && <span className="field-error">{fieldErrors.password}</span>}
         </div>
 
         <button type="submit" className="primary-btn" disabled={loading}>
-          {loading ? "Logging in…" : "Log in"}
+          {loading ? 'Logging in…' : 'Log in'}
         </button>
         <p className="auth-switch">
           Don't have an account? <Link to="/">Sign up</Link>

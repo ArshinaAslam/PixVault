@@ -7,7 +7,7 @@ import { MESSAGES } from '../../common/constants/statusMessages';
 import { HttpStatus } from '../../common/enums/httpStatus.enum';
 import { AppError } from '../../common/errors/appError';
 import { ENV } from '../../config/env';
-import { SignupDto, LoginDto, AuthResultDto, AuthUserDto } from '../../dto/auth.dto';
+import { SignupDto, LoginDto, AuthResultDto, AuthUserDto, ChangePasswordDto } from '../../dto/auth.dto';
 import { IUserRepository } from '../../repositories/interface/IUserRepository';
 import { AuthMapper } from '../../mappers/auth.mapper';
 import logger from '../../utils/logger';
@@ -95,11 +95,36 @@ export class AuthService implements IAuthService {
     return { accessToken: newAccessToken };
   }
 
-    async getCurrentUser(userId: string): Promise<AuthUserDto> {
+  async getCurrentUser(userId: string): Promise<AuthUserDto> {
     const user = await this._userRepo.findByUserId(userId);
     if (!user) {
       throw new AppError(MESSAGES.AUTH.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     return AuthMapper.toUserDto(user);
   }
+
+  async changePassword(userId: string, dto: ChangePasswordDto): Promise<void> {
+  if (!dto.currentPassword || !dto.newPassword) {
+    throw new AppError(MESSAGES.AUTH.REQUIRED_FIELDS, HttpStatus.BAD_REQUEST);
+  }
+
+  const user = await this._userRepo.findByUserId(userId);
+  if (!user) {
+    throw new AppError(MESSAGES.AUTH.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+  }
+
+  const isMatch = await bcrypt.compare(dto.currentPassword, user.password);
+  if (!isMatch) {
+    throw new AppError(MESSAGES.AUTH.INVALID_CURRENT_PASSWORD, HttpStatus.BAD_REQUEST);
+  }
+
+  if (dto.currentPassword === dto.newPassword) {
+    throw new AppError(MESSAGES.AUTH.SAME_PASSWORD, HttpStatus.BAD_REQUEST);
+  }
+
+  const hashedPassword = await bcrypt.hash(dto.newPassword, 10);
+  await this._userRepo.updateById(userId, { password: hashedPassword });
+
+  logger.info("Password changed successfully", { userId });
+}
 }

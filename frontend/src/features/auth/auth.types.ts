@@ -11,7 +11,6 @@ export interface AuthState {
   error: string | null;
 }
 
-
 export interface SignupPayload {
   email: string;
   phone: string;
@@ -23,10 +22,7 @@ export interface LoginPayload {
   password: string;
 }
 
-
 export interface AuthResult {
   user: User;
   accessToken: string;
 }
-
-

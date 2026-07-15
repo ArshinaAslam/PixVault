@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  headers: { "Content-Type": "application/json" },
-  withCredentials: true, 
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
 let accessToken: string | null = null;
@@ -24,8 +24,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-   
-    const isRefreshCall = originalRequest.url?.includes("/auth/refresh-token");
+    const isRefreshCall = originalRequest.url?.includes('/auth/refresh-token');
 
     if (error.response?.status === 401 && !originalRequest._retry && !isRefreshCall) {
       originalRequest._retry = true;
@@ -41,7 +40,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch {
         setAccessToken(null);
-        window.location.href = "/login";
+        window.location.href = '/login';
       }
     }
 
